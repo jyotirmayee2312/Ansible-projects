@@ -6,10 +6,13 @@ const MongoClient = require('mongodb').MongoClient;
 const bodyParser = require('body-parser');
 const app = express();
 
+// Replace 'http://13.232.169.235' with your frontend's domain or IP address
+const frontendDomain = 'http://13.232.169.235';
+
 app.use(cors({
-  origin: 'http://13.232.169.235', // Set to the frontend's domain
-  credentials: true, // Allow sending cookies with the request
-})); 
+  origin: frontendDomain,
+  credentials: true,
+}));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -24,7 +27,7 @@ app.get('/profile-picture', function (req, res) {
   res.end(img, 'binary');
 });
 
-const mongoUri = "mongodb+srv://jyotirmayee:Aim40Lpa@jyoticluster.ibau2sz.mongodb.net/?retryWrites=true&w=majority"; // Replace with your MongoDB Atlas URI
+const mongoUri = "mongodb+srv://jyotirmayee:Aim40Lpa@jyoticluster.ibau2sz.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const databaseName = "user-account";
@@ -73,6 +76,6 @@ client.connect(function (err) {
   if (err) throw err;
 
   app.listen(3000, function () {
-    console.log("app listening on port 3000!");
+    console.log("App listening on port 3000!");
   });
 });
