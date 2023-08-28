@@ -1,9 +1,15 @@
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 const fs = require('fs');
 const MongoClient = require('mongodb').MongoClient;
 const bodyParser = require('body-parser');
 const app = express();
+
+app.use(cors({
+  origin: 'http://13.232.169.235', // Set to the frontend's domain
+  credentials: true, // Allow sending cookies with the request
+})); 
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
