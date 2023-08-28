@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
     <style>
         .container {
             margin: 40px auto;
@@ -47,10 +48,8 @@
     </style>
     <script>
         (async function init() {
-            const response = await fetch('http://localhost:3000/get-profile');
-            console.log("response", response);
+            const response = await fetch('http://13.232.169.235:3000/get-profile');
             const user = await response.json();
-            console.log(JSON.stringify(user));
 
             document.getElementById('name').textContent = user.name ? user.name : 'Anna Smith';
             document.getElementById('email').textContent = user.email ? user.email : 'anna.smith@example.com';
@@ -65,16 +64,16 @@
             const cont = document.getElementById('container');
 
             const payload = {
-                name: document.getElementById('input-name').value, 
-                email: document.getElementById('input-email').value, 
+                name: document.getElementById('input-name').value,
+                email: document.getElementById('input-email').value,
                 interests: document.getElementById('input-interests').value
             };
 
-            const response = await fetch('http://localhost:3000/update-profile', {
+            const response = await fetch('http://13.232.169.235:3000/update-profile', {
                 method: "POST",
                 headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(payload)
             });
@@ -100,7 +99,6 @@
             contEdit.style.display = 'block';
         }
     </script>
-    <title>User Profile</title>
 </head>
 <body>
     <div class='container' id='container'>
