@@ -6,7 +6,8 @@ const MongoClient = require('mongodb').MongoClient;
 const bodyParser = require('body-parser');
 const app = express();
 
-const frontendDomain = process.env.FRONTEND_DOMAIN || 'http://localhost:3000';
+// Replace 'http://13.232.169.235' with your frontend's domain or IP address
+const frontendDomain = 'http://13.232.169.235:3000';
 
 app.use(cors({
   origin: frontendDomain,
