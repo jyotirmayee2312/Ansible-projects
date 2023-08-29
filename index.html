@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
     <style>
         .container {
             margin: 40px auto;
@@ -47,8 +46,10 @@
         }
     </style>
     <script>
-        (async function init() {
-            const response = await fetch('http://13.232.169.235:3000/get-profile');
+        const frontendDomain = "{{ frontend_ip }}";
+
+        async function init() {
+            const response = await fetch(`${frontendDomain}/get-profile`);
             const user = await response.json();
 
             document.getElementById('name').textContent = user.name ? user.name : 'Anna Smith';
@@ -57,7 +58,7 @@
 
             const cont = document.getElementById('container');
             cont.style.display = 'block';
-        })();
+        }
 
         async function handleUpdateProfileRequest() {
             const contEdit = document.getElementById('container-edit');
@@ -69,7 +70,7 @@
                 interests: document.getElementById('input-interests').value
             };
 
-            const response = await fetch('http://13.232.169.235:3000/update-profile', {
+            const response = await fetch(`${frontendDomain}/update-profile`, {
                 method: "POST",
                 headers: {
                     'Accept': 'application/json',
@@ -77,6 +78,7 @@
                 },
                 body: JSON.stringify(payload)
             });
+
             const jsonResponse = await response.json();
 
             document.getElementById('name').textContent = jsonResponse.name;
@@ -98,7 +100,10 @@
             cont.style.display = 'none';
             contEdit.style.display = 'block';
         }
+
+        window.onload = init;
     </script>
+    <title>User Profile</title>
 </head>
 <body>
     <div class='container' id='container'>
