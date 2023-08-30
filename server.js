@@ -1,36 +1,75 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const MongoClient = require('mongodb').MongoClient;
 const bodyParser = require('body-parser');
-const http = require('http');
-const https = require('https');
+const cors = require('cors'); // Import the cors middleware
 
 const app = express();
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors()); // Use cors middleware for all routes
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
+app.get('/profile-picture', function (req, res) {
+  let img = fs.readFileSync(path.join(__dirname, "images/profile-1.jpg"));
+  res.writeHead(200, {'Content-Type': 'image/jpg' });
+  res.end(img, 'binary');
+});
 
-// Proxy requests to backend
-app.get('/get-profile', (req, res) => {
-  const backendRequest = https.get('https://backend-server:3000/get-profile', (backendRes) => {
-    backendRes.pipe(res);
-  });
+const mongoUri = "mongodb+srv://jyotirmayee:Aim40Lpa@jyoticluster.ibau2sz.mongodb.net/?retryWrites=true&w=majority"; // Replace with your MongoDB Atlas URI
+const client = new MongoClient(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-  backendRequest.on('error', (err) => {
-    console.error('Error proxying request to backend:', err);
-    res.status(500).send('Error proxying request to backend');
+const databaseName = "user-account";
+
+app.post('/update-profile', function (req, res) {
+  const userObj = req.body;
+
+  client.connect(function (err) {
+    if (err) throw err;
+
+    const db = client.db(databaseName);
+    userObj['userid'] = 1;
+
+    const myquery = { userid: 1 };
+    const newvalues = { $set: userObj };
+
+    db.collection("users").updateOne(myquery, newvalues, { upsert: true }, function (err, result) {
+      if (err) throw err;
+      // Send response
+      res.send(userObj);
+    });
   });
 });
 
-const server = http.createServer(app);
+app.get('/get-profile', function (req, res) {
+  let response = {};
 
-const port = process.env.PORT || 3000;
-server.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+  client.connect(function (err) {
+    if (err) throw err;
+
+    const db = client.db(databaseName);
+
+    const myquery = { userid: 1 };
+
+    db.collection("users").findOne(myquery, function (err, result) {
+      if (err) throw err;
+      response = result;
+
+      // Send response
+      res.send(response ? response : {});
+    });
+  });
+});
+
+client.connect(function (err) {
+  if (err) throw err;
+
+  app.listen(3000, function () {
+    console.log("app listening on port 3000!");
+  });
 });
