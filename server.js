@@ -16,7 +16,7 @@ app.set('view engine', 'ejs'); // Set EJS as the view engine
 app.set('views', path.join(__dirname, 'views')); // Set the views directory
 
 app.get('/', function (req, res) {
-  res.render('index', { server_ip: process.env.SERVER_IP || 'localhost' });
+  res.render('index', { SERVER_IP: process.env.SERVER_IP || 'localhost' });
 });
 
 app.get('/profile-picture', function (req, res) {
