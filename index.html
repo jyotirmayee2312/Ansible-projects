@@ -72,7 +72,7 @@
     </div>
 
     <script>
-        const serverIp = 'your_backend_ip'; // Replace with your backend server IP
+        const serverIp = '52.66.79.12'; // Replace with your backend server IP
 
         (async function init() {
             const response = await fetch(`http://${serverIp}:3000/get-profile`);
@@ -91,8 +91,8 @@
             const cont = document.getElementById('container');
 
             const payload = {
-                name: document.getElementById('input-name').value, 
-                email: document.getElementById('input-email').value, 
+                name: document.getElementById('input-name').value,
+                email: document.getElementById('input-email').value,
                 interests: document.getElementById('input-interests').value
             };
 
