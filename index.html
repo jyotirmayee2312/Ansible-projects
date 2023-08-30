@@ -72,7 +72,7 @@
     </div>
 
     <script>
-        const serverIp = '52.66.79.12'; // Replace with your backend server IP
+        const serverIp = '{{ server_ip }}'; // Replace with your backend server IP
 
         (async function init() {
             const response = await fetch(`http://${serverIp}:3000/get-profile`);
